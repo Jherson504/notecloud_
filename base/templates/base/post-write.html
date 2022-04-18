@@ -1,0 +1,27 @@
+{% extends 'base/main.html' %}
+{% block title %}
+HOME
+{% endblock title %}
+
+{% block content %}
+
+
+<main class="container-fluid pt-3 text-white">
+    <div class="container card card-body bg-dark px-5">
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3 mt-3 row gap-2 px-5">
+                <label for="title" class="form-label col-1">Title:</label>
+                <input type="title" class="form-control col" id="title" required placeholder="Enter title" name="title">
+            </div>
+            <div class="mb-3 mt-3 row gap-2 px-5">
+                <label for="topic" class="form-label col-1">Topic:</label>
+                <input type="topic" class="form-control col" required id="topic" placeholder="Enter topic" name="topic">
+            </div>
+            <div class="px-5 d-flex justify-content-end">
+                <button type="submit" class="btn btn-warning bi-box-arrow-in-up-right"> Create</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock content %}

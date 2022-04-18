@@ -1,0 +1,21 @@
+{% extends 'base/main.html' %}
+{% block title %}
+HOME
+{% endblock title %}
+
+{% block content %}
+<main class="container-fluid pt-3 text-white">
+    <div class="container">
+        <div>
+            <h2 class="text-center text-warning">{{post.title}}</h2>
+        </div>
+        <div class="mt-5">
+            <p class="lead">{{post.content}}</p>
+            <a href="#" class="text-decoration-none">
+                <p class="blockquote-footer bi-person text-info text-end">@{{post.owner.username}}</p>
+            </a>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

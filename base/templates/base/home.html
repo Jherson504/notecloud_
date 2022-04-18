@@ -1,0 +1,43 @@
+{% extends 'base/main.html' %}
+{% block title %}
+HOME
+{% endblock title %}
+
+{% block content %}
+<main class="container-fluid pt-3 text-white mt-3">
+    <div class="container d-flex justify-content-around gap-3">
+
+        <div id="explore" class="col-8 d-grid gap-2">
+            <div class="px-3 rounded bg-dark d-flex justify-content-between align-items-center py-3">
+                <h2>Explore</h2>
+                <a href="{% url 'write-post' %}" class="text-decoration-none">
+                    <h2 class="h5 text-warning bi-pen"> Write Post</h2>
+                </a>
+            </div>
+            {% for post in posts %}
+            <div class="card card-body bg-dark p-3">
+                <div class="">
+                    <h3 class="h4 text-center">{{ post.title }}</h3>
+                    <p class="text-center" style="font-size: 1rem; line-height: 0; margin-top: 2em;">
+                        {{post.created|timesince }} ago</p>
+                    <p style="font-size: 1rem;" class="bi-person text-center">{{ post.owner.username }}
+                    </p>
+                </div>
+                <div>
+                    <p class="lead">{{post.description}}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div id="Activities" class="col d-flex flex-column gap-2">
+            <h2 class="rounded p-3 bg-dark text-center">Activities</h2>
+            <div class="card bg-dark p-3">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. At, quis nesciunt iusto provident
+                distinctio amet minima dolorum tenetur inventore voluptatibus unde libero hic! Esse aperiam
+                omnis, deleniti necessitatibus impedit in.
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

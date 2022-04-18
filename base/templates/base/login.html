@@ -1,0 +1,111 @@
+{% extends 'base/main.html' %}
+{% block title %}
+Log in
+{% endblock title %}
+{% load static %}
+{% block content %}
+
+
+
+<!--Wrapper-->
+<div class="container mt-5" id="login-body-wrapper">
+    <div class="container-fluid rounded bg-dark row justify-content-between gap-5 p-5">
+        <header class="text-center text-light text-md-start col-sm-6">
+            <h1>Notebooks</h1>
+            <p class="lead">Write, store or share your knowledges to everyone!</p>
+        </header>
+        <main class="card card-body bg-dark border-0 bg-light shadow-lg col-sm-auto">
+            <p class="text-danger text-center" id="out">{% for message in messages %}{{message}}{% endfor %}</p>
+            <form id="login-form" action="" method="post" class="form-group d-grid gap-2">
+                {% csrf_token %}
+                <input oninput="checkUsername(event)" type="text" name="username" class="form-control"
+                    placeholder="username">
+                <input type="password" name="password" class="form-control" placeholder="password">
+                <input type="submit" name="login" class="btn btn-warning" value="Login">
+            </form>
+            <form onsubmit="formValidate(event)" id="sign-in-form" action="" method="post"
+                class="d-none form-group d-grid gap-2">
+                {% csrf_token %}
+                <input type="text" name="username" class="form-control" placeholder="username">
+                <input type="password" name="password" class="form-control" placeholder="password">
+                <input type="password" name="repeat_password" class="form-control" placeholder="repeat password">
+                <input type="submit" name="sign-in" class="btn btn-warning" value="Sign-in">
+            </form>
+            <p id="prompt" class="mt-3 small text-center text-light">Don't have an account yet? <a
+                    onclick="pressed(event)" class="text-decoration-none text-warning" role="button">Sign
+                    in</a></p>
+        </main>
+    </div>
+</div>
+
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    var url = "{% static 'json/usernames.json' %}";
+    var usernames;
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var myArr = JSON.parse(this.responseText);
+            usernames = myArr;
+            console.log(usernames);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    var isLoginState = true;
+    const loginform = document.getElementById('login-form');
+    const signinform = document.getElementById('sign-in-form');
+    const prompt = document.getElementById('prompt');
+    const out = document.getElementById('out');
+    console.log('connected');
+    function checkUsername(e) {
+        let verified = false;
+        usernames.usernames.every(username => {
+            if (username == e.target.value) {
+                verified = true;
+                return false;
+            }
+            return true;
+        })
+        if (!verified) {
+            out.innerText = "Username does not exists.";
+        }
+        else if (verified) {
+            out.innerText = "";
+        }
+
+    }
+    function pressed(e) {
+        e.preventDefault()
+        isLoginState = !isLoginState;
+        if (isLoginState) {
+            loginform.classList.remove('d-none');
+            signinform.classList.add('d-none');
+            prompt.innerHTML = "Don't have an account yet? <a onclick=\"pressed(event)\" class=\"text-decoration-none text-warning\" role=\"button\">Signin</a>";
+        }
+        else {
+            loginform.classList.add('d-none');
+            signinform.classList.remove('d-none');
+            prompt.innerHTML = "Already have an account? <a onclick=\"pressed(event)\" class=\"text-decoration-none text-warning\" role=\"button\">Login</a>";
+        }
+
+    }
+    function formValidate(event) {
+        console.log("Validating...");
+        usernames.usernames.forEach(username => {
+            if (signinform.querySelector('[name="username"]').value === username) {
+                console.log("Username Exists");
+                out.innerText = 'Username already exists.';
+                event.preventDefault();
+                return;
+            }
+            else if (signinform.querySelector('[name="password"]').value !== signinform.querySelector('[name="repeat_password"').value) {
+                out.innerText = 'Password does not match.';
+                event.preventDefault();
+                return;
+            }
+        })
+    }
+    console.log(usernames);
+
+</script>
+{% endblock content %}
