@@ -9,4 +9,6 @@ urlpatterns = [
 
     path('write-post/', views.write_post, name='write-post'),
     path('edit-post/<str:pk>/', views.edit_post, name='edit-post'),
+    path('view-post/<str:pk>/', views.view_post, name='view-post'),
+
 ]

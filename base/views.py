@@ -106,3 +106,12 @@ def write_post(request):
         return redirect('edit-post', pk=post.id)
 
     return render(request, 'base/post-write.html')
+
+
+def view_post(request, pk):
+    post = Post.objects.get(id=pk)
+    context = {
+        'post': post
+    }
+
+    return render(request, 'base/post-view.html', context)
