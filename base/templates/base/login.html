@@ -39,6 +39,7 @@ Log in
 </div>
 
 <script>
+
     var xmlhttp = new XMLHttpRequest();
     var url = "{% static 'json/usernames.json' %}";
     var usernames;
@@ -66,46 +67,51 @@ Log in
             }
             return true;
         })
-        if (!verified) {
-            out.innerText = "Username does not exists.";
-        }
-        else if (verified) {
+        if (verified) {
             out.innerText = "";
+            return;
         }
+        out.innerText = "Username does not exists.";
+
 
     }
     function pressed(e) {
         e.preventDefault()
         isLoginState = !isLoginState;
-        if (isLoginState) {
-            loginform.classList.remove('d-none');
-            signinform.classList.add('d-none');
-            prompt.innerHTML = "Don't have an account yet? <a onclick=\"pressed(event)\" class=\"text-decoration-none text-warning\" role=\"button\">Signin</a>";
-        }
-        else {
+
+        if (!isLoginState) {
             loginform.classList.add('d-none');
             signinform.classList.remove('d-none');
             prompt.innerHTML = "Already have an account? <a onclick=\"pressed(event)\" class=\"text-decoration-none text-warning\" role=\"button\">Login</a>";
+            return;
         }
+
+        loginform.classList.remove('d-none');
+        signinform.classList.add('d-none');
+        prompt.innerHTML = "Don't have an account yet? <a onclick=\"pressed(event)\" class=\"text-decoration-none text-warning\" role=\"button\">Signin</a>";
+
+
+
 
     }
     function formValidate(event) {
+        let err;
         console.log("Validating...");
         usernames.usernames.forEach(username => {
             if (signinform.querySelector('[name="username"]').value === username) {
                 console.log("Username Exists");
-                out.innerText = 'Username already exists.';
+                err = 'Username already exists.';
                 event.preventDefault();
-                return;
             }
-            else if (signinform.querySelector('[name="password"]').value !== signinform.querySelector('[name="repeat_password"').value) {
-                out.innerText = 'Password does not match.';
+            if (signinform.querySelector('[name="password"]').value !== signinform.querySelector('[name="repeat_password"').value) {
+
+
                 event.preventDefault();
-                return;
+                if (!err) err = 'Password does not match.';
+                err += '\nPassword does not match.';
             }
+            out.innerText = err;
         })
     }
-    console.log(usernames);
-
 </script>
 {% endblock content %}
