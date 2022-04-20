@@ -1,0 +1,17 @@
+#comment-section {
+    position: fixed;
+    bottom: 0;
+}
+#comments-section {
+    height: 25vh;
+}
+#content-section {
+    max-height: 50vh;
+    min-height: 50vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+}

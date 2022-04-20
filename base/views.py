@@ -109,8 +109,20 @@ def write_post(request):
 
 
 def view_post(request, pk):
+
     post = Post.objects.get(id=pk)
+    if request.method == 'POST':
+        form = request.POST
+
+        comment = form.get('comment-input')
+        if comment:
+            Comment.objects.create(
+                content=comment, owner=request.user, post=post).save()
+
+    comments = Comment.objects.filter(post=post)
+
     context = {
+        'comments': comments,
         'post': post
     }
 

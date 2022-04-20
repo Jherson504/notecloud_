@@ -2,20 +2,47 @@
 {% block title %}
 HOME
 {% endblock title %}
-
+{% load static %}
 {% block content %}
-<main class="container-fluid pt-3 text-white">
-    <div class="container">
-        <div>
-            <h2 class="text-center text-warning">{{post.title}}</h2>
+<link rel="stylesheet" href="{% static 'styles/post-view.css' %}">
+<div class="container-fluid">
+    <main id="view-body" class="container-fluid pt-3 text-white d-flex flex-column align-items-center">
+        <div class="header  w-25">
+            <h2 class="text-center rounded-pill bg-dark text-warning fw-bold py-1">{{post.title}}</h2>
         </div>
-        <div class="mt-5 bg-dark rounded p-5">
-            <p class="lead">{{post.content}}</p>
-            <a href="#" class="text-decoration-none">
-                <p class="blockquote-footer bi-person text-info text-end">@{{post.owner.username}}</p>
-            </a>
+        <div id="content-section" class="bg-dark rounded-top overflow-auto">
+
+            <div class="bg-dark rounded px-5">
+                <p class="lead">{{post.content}}</p>
+                <a href="#" class="text-decoration-none">
+                    <p class="blockquote-footer bi-person text-info text-end">@{{post.owner.username}}</p>
+                </a>
+            </div>
         </div>
-    </div>
-</main>
+
+
+
+    </main>
+    <section id="comments-section" class="mx-3 d-flex flex-column mt-3 bg-dark px-5 py-2 rounded-bottom overflow-auto">
+        <h3 class="text-light">Comments</h3>
+        {% for comment in comments %}
+        <div class="my-2">
+            <p class="h6 text-warning">@{{ comment.owner.username }}<span
+                    class="small fw-light badge bg-primary rounded-pill">{{ comment.created|timesince }} ago...</span>
+            </p>
+            <p class="fw-light text-light">{{ comment.content }}</p>
+        </div>
+        {% endfor %}
+    </section>
+</div>
+<aside id="comment-section" class="container-fluid p-3">
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="input-group">
+            <textarea id="comment-input" name="comment-input" class="form-control text-white bg-dark"></textarea>
+            <button for="comment-input" type="submit" class="btn btn-primary">Comment</button>
+        </div>
+    </form>
+</aside>
 
 {% endblock content %}
